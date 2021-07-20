@@ -1,34 +1,30 @@
-const listNode = document.querySelector('#listWrapper')
-const btnNode = document.querySelector('#myBtn')
-const apiURL = 'https://jsonplaceholder.typicode.com/posts'
-
-
-const fetchFn = url => fetch(url).then(res => res.json())
+const listNode = document.querySelector("#listWrapper");
+const btnNode = document.querySelector("#myBtn");
+const apiURL = "https://jsonplaceholder.typicode.com/posts";
 
 const counterObj = {
-    counter: 0
-}
-const dataCB = data => {
-    if (data.id > counterObj.counter) {
-        return
-    }
-    listNode.innerHTML += printFn(data)
-}
+  counter: 0,
+};
 
-const printFn = data => {
-    return `<div class="tarjetClass">
+const fetchFn = (url) => fetch(url).then((res) => res.json());
+
+const dataCB = (data) => {
+  if (data.id > counterObj.counter) return;
+  listNode.innerHTML += printFn(data);
+};
+
+const printFn = (data) => {
+  return `<div class="tarjetClass">
                 <p>${data.title}</p>
-            </div>`
-}
+            </div>`;
+};
 
+btnNode.addEventListener("click", () => {
+  counterObj.counter += 10;
+  fetchFn(apiURL).then((data) => {
+    data.map(dataCB);
+    return data;
+  });
 
-btnNode.addEventListener('click', () => {
-    counterObj.counter += 10
-    fetchFn(apiURL).then(data => {
-        data.map(dataCB)
-        return data
-    })
-
-    listNode.scrollTop = listNode.scrollHeight
-})
-
+  listNode.scrollTop = listNode.scrollHeight;
+});
